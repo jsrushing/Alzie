@@ -1,0 +1,73 @@
+Should check for backups when menu 'Backup ... > Delete Previous Backups' is shown (disable if no previous backups to delete).
+    Low priority, maybe abandon this altogether.
+ 
+When operating on tasks while lstVu is scrolled, should remember top index for re-selection (now goes back to top of list).
+    This is important.  Any task operation ... moving, editing, etc. ... returns list to top index = 0.
+        Operations to be changed are:
+            Add task
+            Edit task
+            Move task
+ 
+Tasks need a 'Date Completed' property.
+    Will require new column (eventually)
+    Will require somewhere to display value on formTaskDetails
+ 
+BUG >>> Moving task left/right (and up/down too?) is persistent ... changes task list whether Save List is pressed or not :(
+    5/24/10 : Note - Is only when moving left/right.  Up/down is ok.
+    Can't see exactly why this is happening.  Unlike up/down, L/R changes a property of the Task object (U/D changes the Tasklist object).
+ 
+§Put in a 'close CRS?' prompt.
+ 
+§For Backups, need 2 menu options: a) Delete Previous Backups, b) Backup Now
+ 
+Need a Print Tasks option !!!
+    Print Tasklist or Selected Tasks ???
+    Print to file?
+        Text file?  
+                Will lose fonts!
+                    Not necessarily.  .Txt files support fonts.
+ 
+§Change Menu Hotkey : Move left/right, no 'CTRL'
+§All menus under 'More' need accel keys !
+ 
+Strange Bug!  When adding task (+ Above on top row) all tasks were cleared!
+    Switching tasklists restored all tasks ok (so TFM's master List(Of Task) wasn't destroyed).  Watch for repeat!!
+ 
+Not having text selected in task text area is a pain.  Maybe have no text there?  Could eliminate 'blank row' option then ... just click Ok to add a blank.
+ 
+§Another Small Bug: When creating new tasklist prompt is issued to 'delete blank row?' (process creates one blank row then deletes it).
+§    Need to check out new task list creation completely.  Had another problem = couldn't delete last task (right click said index out of range) after making new task list but after adding about 15 tasks could delete ok.
+§        This bug was related to deletion prompt bug.  Both are fixed.
+ 
+Wrote block edit for font and color.
+    Need to do some initial setting up of font & color on formEditMultiple (if all selected items are same then post those values).
+§    Also might be nice to have samples of fonts as they're selected.
+§        Am using task textbox to display font selection.
+    Also need to take a serious look at MenuManager.ConfigureMenus, especially when 'state = 3'.  Now that block operations are defined much in this section needs to be re-visited.
+        Small Bug: Changing font/color in blocks is persistent.  Answering 'No' to 'save changes?' does not discard changes.
+ 
+Wrote MenuManager and moved ~200 lines of code.  All menu functions now handled in MenuManager class
+ 
+§Small bug: menus up & down on popup aren't enabled on right click when multiple rows are selected.
+§    Can enable these because block up/down is now supported
+    Was something wrong with notifications/alerts when 'Notify' is checked ???
+        Haven't checked notification much.  Tried several and got some good results and 1 bad.
+        Had 1 failed notification today.  Set due date but didn't go off :(
+ 
+§Set tray icon text to CRS !!!
+ 
+Settings:
+    Default font
+ 
+§Block editing ...
+§    Can change Font, Color, and 'Complete' in blocks. - 5/9/10 : Only 'Complete' is in blocks.  Still need to change Font & Color in blocks !!
+§    Block move up/down (already have left/right) - Completed 5/9/10
+ 
+§5/5/10 : 
+§    Finally solved problem by deleting form1 from active solution and using Form1 (+ files) from the youngest backup.
+§    Discarded font dialog, put font details/choices on formTaskDetails in custom controls.
+ 
+§5/3/10 : VERY BAD BUG (VBG).  
+§    When closing font dialog on task details, whether Ok or Cancel, dialog closed, form closed, and Form1.lstVu selection highlight became, and stayed, disabled.
+§    No code reason was found for the behavior, and lstVu selection did NOT return to normal on re-start.  The behavior was identical in the build version.
+§    Backups worked as expected but were missing a new task property, .Font.
